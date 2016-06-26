@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">HelloWorld</string>
+    <string name="tab_name1">Tab1</string>
+    <string name="tab_name2">Tab2</string>
+    <string name="tab_name3">Tab3</string>
+    <string name="tab_name4">Tab4</string>
+
+    <string name="text1">Text Text Text Text Text\nText Text Text Text Text\nText Text Text Text Text\nText Text Text Text Text\nText Text Text Text Text\nText Text Text Text Text\n</string>
+</resources>
