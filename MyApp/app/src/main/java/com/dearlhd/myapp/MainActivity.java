@@ -1,19 +1,17 @@
 package com.dearlhd.myapp;
 
-import android.content.Context;
+import android.app.ListFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.FrameLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.widget.ViewFlipper;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.dearlhd.myapp.fragments.MyFragment;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     // ViewFlipper for ad
@@ -28,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //Fragment Object
     private MyFragment fg1,fg2,fg3,fg4;
+    private ListFragment listFragment;
     private FragmentManager fManager;
 
     @Override
@@ -67,6 +66,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //隐藏所有Fragment
     private void hideAllFragment(FragmentTransaction fragmentTransaction){
+        if (listFragment != null) fragmentTransaction.hide(listFragment);
+
         if(fg1 != null)fragmentTransaction.hide(fg1);
         if(fg2 != null)fragmentTransaction.hide(fg2);
         if(fg3 != null)fragmentTransaction.hide(fg3);
@@ -82,17 +83,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.txt_channel:
                 setSelected();
                 txt_channel.setSelected(true);
-                if(fg1 == null){
-                    String str = "";
-                    for (int i = 0; i < 100; i++) {
-                        str += "text text text text text\n";
-                    }
-                    str += "end\n";
-                    fg1 = new MyFragment(str);
-                    fTransaction.add(R.id.ly_content,fg1);
-                }else{
-                    fTransaction.show(fg1);
+                if (listFragment == null) {
+                    listFragment = new ListFragment();
+                    fTransaction.add(R.id.ly_content, listFragment);
                 }
+                else {
+                    fTransaction.show(listFragment);
+                }
+
+//                if(fg1 == null){
+//                    String str = "";
+//                    for (int i = 0; i < 100; i++) {
+//                        str += "text text text text text\n";
+//                    }
+//                    str += "end\n";
+//                    fg1 = new MyFragment(str);
+//                    fTransaction.add(R.id.ly_content,fg1);
+//                }
+//                else{
+//                    fTransaction.show(fg1);
+//                }
                 break;
             case R.id.txt_message:
                 setSelected();
@@ -126,17 +136,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
         fTransaction.commit();
-    }
-
-    public void initListView() {
-        List<Person> persons = new ArrayList<Person>();
-        Context context = MainActivity.this;
-        ListView listView = (ListView) findViewById(R.id.list_view);
-        for (int i = 0; i < 10; i++) {
-            persons.add(new Person("person" + i, "info" + i, R.mipmap.ic_launcher));
-        }
-
-        PersonAdapter pAdapter = new PersonAdapter(persons, context);
-        listView.setAdapter(pAdapter);
     }
 }

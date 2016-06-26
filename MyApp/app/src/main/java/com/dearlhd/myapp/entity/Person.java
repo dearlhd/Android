@@ -1,4 +1,4 @@
-package com.dearlhd.myapp;
+package com.dearlhd.myapp.entity;
 
 /**
  * Created by dearlhd on 2016/6/26.
