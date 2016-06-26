@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">MyApp</string>
+
+    <string name="tab_menu_alert">提醒</string>
+    <string name="tab_menu_profile">信息</string>
+    <string name="tab_menu_pay">我的</string>
+    <string name="tab_menu_setting">设置</string>
+    <string name="ad_content1">ad1</string>
+    <string name="ad_content2">ad2</string>
+    <string name="ad_content3">ad3</string>
+</resources>
