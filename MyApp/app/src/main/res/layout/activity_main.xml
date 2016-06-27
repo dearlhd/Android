@@ -1,82 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.dearlhd.myapp.MainActivity">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                tools:context="com.dearlhd.myapp.MainActivity">
 
-    <LinearLayout
+    <com.dearlhd.myapp.scrollView.HoveringScrollview
+        android:id="@+id/hovering_scroll_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <ViewFlipper
-            android:id="@+id/adFlipper"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="65dp"
-            android:background="#f3e2f4"
-            android:flipInterval="3000"
-            android:inAnimation="@anim/right_in"
-            android:outAnimation="@anim/right_out">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <include layout="@layout/ad1" />
+            <ViewFlipper
+                android:id="@+id/adFlipper"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:background="#f3e2f4"
+                android:flipInterval="3000"
+                android:inAnimation="@anim/right_in"
+                android:outAnimation="@anim/right_out">
 
-            <include layout="@layout/ad2" />
+                <include layout="@layout/ad1"/>
 
-            <include layout="@layout/ad3" />
+                <include layout="@layout/ad2"/>
 
-        </ViewFlipper>
+                <include layout="@layout/ad3"/>
 
-        <RadioGroup
-            android:id="@+id/rg_tab_bar"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_alignParentBottom="true"
-            android:background="@color/bg_white"
-            android:orientation="horizontal">
+            </ViewFlipper>
 
-            <RadioButton
-                android:id="@+id/rb_channel"
-                style="@style/tab_menu_item"
-                android:drawableTop="@drawable/tab_menu_channel"
-                android:text="@string/tab_menu_alert" />
+            <LinearLayout
+                android:id="@+id/hoveringLayout1"
+                android:layout_width="match_parent"
+                android:layout_height="56dp">
 
-            <RadioButton
-                android:id="@+id/rb_message"
-                style="@style/tab_menu_item"
-                android:drawableTop="@drawable/tab_menu_message"
-                android:text="@string/tab_menu_profile" />
+                <RadioGroup
+                    android:id="@+id/rg_tab_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/bg_white"
+                    android:orientation="horizontal">
 
-            <RadioButton
-                android:id="@+id/rb_better"
-                style="@style/tab_menu_item"
-                android:drawableTop="@drawable/tab_menu_better"
-                android:text="@string/tab_menu_pay" />
+                    <RadioButton
+                        android:id="@+id/rb_channel"
+                        style="@style/tab_menu_item"
+                        android:drawableTop="@drawable/tab_menu_channel"
+                        android:text="@string/tab_menu_alert"/>
 
-            <RadioButton
-                android:id="@+id/rb_setting"
-                style="@style/tab_menu_item"
-                android:drawableTop="@drawable/tab_menu_setting"
-                android:text="@string/tab_menu_setting"/>
+                    <RadioButton
+                        android:id="@+id/rb_message"
+                        style="@style/tab_menu_item"
+                        android:drawableTop="@drawable/tab_menu_message"
+                        android:text="@string/tab_menu_profile"/>
 
-        </RadioGroup>
+                    <RadioButton
+                        android:id="@+id/rb_better"
+                        style="@style/tab_menu_item"
+                        android:drawableTop="@drawable/tab_menu_better"
+                        android:text="@string/tab_menu_pay"/>
 
-        <View
-            android:id="@+id/div_tab_bar"
-            android:layout_width="match_parent"
-            android:layout_height="2px"
-            android:layout_above="@id/rg_tab_bar"
-            android:background="@color/div_white" />
+                    <RadioButton
+                        android:id="@+id/rb_setting"
+                        style="@style/tab_menu_item"
+                        android:drawableTop="@drawable/tab_menu_setting"
+                        android:text="@string/tab_menu_setting"/>
 
-        <FrameLayout
-            android:id="@+id/ly_content"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
+                </RadioGroup>
 
-        </FrameLayout>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/div_tab_bar"
+                android:layout_width="match_parent"
+                android:layout_height="2px"
+                android:layout_above="@id/rg_tab_bar"
+                android:background="@color/div_white"/>
+
+            <FrameLayout
+                android:id="@+id/ly_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </com.dearlhd.myapp.scrollView.HoveringScrollview>
+
+    <LinearLayout
+        android:id="@+id/hoveringLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="vertical">
 
     </LinearLayout>
 
-</ScrollView>
+</RelativeLayout>
