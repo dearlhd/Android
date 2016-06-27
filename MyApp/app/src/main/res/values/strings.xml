@@ -1,11 +1,34 @@
 <resources>
     <string name="app_name">MyApp</string>
 
-    <string name="tab_menu_alert">提醒</string>
-    <string name="tab_menu_profile">信息</string>
-    <string name="tab_menu_pay">我的</string>
-    <string name="tab_menu_setting">设置</string>
+    <string name="tab_menu_alert">联系人</string>
+    <string name="tab_menu_profile">网页</string>
+    <string name="tab_menu_pay">文本</string>
+    <string name="tab_menu_setting">画卷</string>
     <string name="ad_content1">ad1</string>
     <string name="ad_content2">ad2</string>
     <string name="ad_content3">ad3</string>
+
+    <string name="title">Swipe Views</string>
+    <string name="content1">
+        Efficient navigation is one of the cornerstones of a well-designed app. \n
+        While apps are generally built in a hierarchical fashion,
+        there are instances where horizontal navigation can flatten vertical hierarchies and make access to related data items faster and more enjoyable.\n
+        Swipe views allow the user to efficiently move from item to item using a simple gesture and thereby make browsing and consuming data a more fluent experience.\n
+    </string>
+    <string name="content2">
+        An app s data is often organized in a master detail relationship:
+        The user can view a list of related data items, such as images, chats, or emails,
+        and then pick one of the items to see the detail contents in a separate screen\n
+    </string>
+    <string name="content3">
+        Master (left) and detail (right) views.
+        On a phone, since the master and detail are on separate screens,
+        this typically requires the user to jump back and forth between the list and the detail view,
+        aka "pogo-sticking".\n
+        In cases where users will want to view multiple detail items in succession,
+        avoid pogo-sticking by using the swipe gesture to navigate to the next/previous detail view.
+    </string>
+
+    <string name="img_tip">Image:</string>
 </resources>

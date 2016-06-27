@@ -1,7 +1,5 @@
 package com.dearlhd.myapp;
 
-import com.dearlhd.myapp.fragments.ListFragment;
-
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Window;
@@ -12,6 +10,9 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.widget.ViewFlipper;
 
+import com.dearlhd.myapp.fragments.ListFragment;
+import com.dearlhd.myapp.fragments.ScrollFragment;
+import com.dearlhd.myapp.fragments.ScrollFragment2;
 import com.dearlhd.myapp.fragments.WebFragment;
 import com.dearlhd.myapp.scrollView.HoveringScrollview;
 
@@ -25,12 +26,15 @@ public class MainActivity extends AppCompatActivity
     // ViewFlipper for ad
     private ViewFlipper adFlipper;
 
+    // radio group for tab bar
     private RadioGroup rg_tab_bar;
     private RadioButton rb_channel;
 
     //Fragment Object
-    private ListFragment fg1, fg3, fg4;
+    private ListFragment fg1;
     private WebFragment fg2;
+    private ScrollFragment fg3;
+    private ScrollFragment2 fg4;
 
     private FragmentManager fManager;
 
@@ -95,7 +99,7 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.rb_better:
                 if (fg3 == null) {
-                    fg3 = new ListFragment();
+                    fg3 = new ScrollFragment();
                     fTransaction.add(R.id.ly_content, fg3);
                 } else {
                     fTransaction.show(fg3);
@@ -103,7 +107,7 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.rb_setting:
                 if (fg4 == null) {
-                    fg4 = new ListFragment();
+                    fg4 = new ScrollFragment2();
                     fTransaction.add(R.id.ly_content, fg4);
                 } else {
                     fTransaction.show(fg4);
