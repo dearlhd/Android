@@ -1,23 +1,16 @@
 package com.dearlhd.myapp;
 
-import android.app.ListFragment;
-import android.content.Context;
+import com.dearlhd.myapp.fragments.ListFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 import android.view.Window;
-import android.widget.FrameLayout;
-import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.widget.ViewFlipper;
 
-import com.dearlhd.myapp.adapter.PersonAdapter;
-import com.dearlhd.myapp.entity.Person;
-import com.dearlhd.myapp.fragments.MyFragment;
+import com.dearlhd.myapp.fragments.WebFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,13 +23,10 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
     private RadioButton rb_channel;
 
     //Fragment Object
-    private MyFragment fg1,fg2,fg3,fg4;
+    private ListFragment fg1,fg3,fg4;
+    private WebFragment fg2;
+
     private FragmentManager fManager;
-
-    //Fragment Object
-
-    //private MyFragment fg1,fg2,fg3,fg4;
-    private ListFragment listFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +54,6 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
 
     //隐藏所有Fragment
     private void hideAllFragment(FragmentTransaction fragmentTransaction){
-        if (listFragment != null) fragmentTransaction.hide(listFragment);
-
         if(fg1 != null)fragmentTransaction.hide(fg1);
         if(fg2 != null)fragmentTransaction.hide(fg2);
         if(fg3 != null)fragmentTransaction.hide(fg3);
@@ -79,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
         switch (i){
             case R.id.rb_channel:
                 if(fg1 == null){
-                    fg1 = new MyFragment();
+                    fg1 = new ListFragment();
                     fTransaction.add(R.id.ly_content,fg1);
                 }else{
                     fTransaction.show(fg1);
@@ -87,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
                 break;
             case R.id.rb_message:
                 if(fg2 == null){
-                    fg2 = new MyFragment();
+                    fg2 = new WebFragment();
                     fTransaction.add(R.id.ly_content,fg2);
                 }else{
                     fTransaction.show(fg2);
@@ -95,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
                 break;
             case R.id.rb_better:
                 if(fg3 == null){
-                    fg3 = new MyFragment();
+                    fg3 = new ListFragment();
                     fTransaction.add(R.id.ly_content,fg3);
                 }else{
                     fTransaction.show(fg3);
@@ -103,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
                 break;
             case R.id.rb_setting:
                 if(fg4 == null){
-                    fg4 = new MyFragment();
+                    fg4 = new ListFragment();
                     fTransaction.add(R.id.ly_content,fg4);
                 }else{
                     fTransaction.show(fg4);
