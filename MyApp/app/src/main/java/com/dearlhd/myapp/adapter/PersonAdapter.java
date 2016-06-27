@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dearlhd.myapp.entity.Person;
@@ -18,10 +19,11 @@ import java.util.List;
 public class PersonAdapter extends BaseAdapter {
     private List<Person> persons;
     private Context mContext;
+    private static int cnt = 0;
 
     public PersonAdapter(List<Person> ps,Context context) {
-        persons = ps;
-        mContext = context;
+        this.persons = ps;
+        this.mContext = context;
     }
 
 
@@ -42,14 +44,17 @@ public class PersonAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        convertView = LayoutInflater.from(mContext).inflate(R.layout.page1, parent, false);
-        //ImageView icon = (ImageView) convertView.findViewById(R.id.img_icon);
-        TextView nameText = (TextView) convertView.findViewById(R.id.person_name);
-        TextView infoText = (TextView) convertView.findViewById(R.id.person_info);
+        if (convertView == null) {
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.list_item, parent, false);
+        }
+        ImageView img_icon = (ImageView) convertView.findViewById(R.id.img_icon);
+        TextView aName = (TextView) convertView.findViewById(R.id.person_name);
+        TextView aSaying = (TextView) convertView.findViewById(R.id.person_info);
 
-        //icon.setBackgroundResource(persons.get(position).getaIcon());
-        nameText.setText(persons.get(position).getName());
-        infoText.setText(persons.get(position).getInfo());
+        Person person = persons.get(position);
+        img_icon.setBackgroundResource(person.getaIcon());
+        aName.setText(person.getName());
+        aSaying.setText(person.getInfo());
 
         return convertView;
     }
