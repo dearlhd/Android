@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Jay on 2015/8/28 0028.
+ * Created by dearlhd on 2016/6/26 0028.
  */
 public class ListFragment extends Fragment {
 
@@ -31,6 +31,7 @@ public class ListFragment extends Fragment {
 
         listView = (ListView) view.findViewById(R.id.list_view);
 
+        // 给 listView 赋值，通过自定义的adapter
         List<Person> persons = new ArrayList<Person>();
         for (int i = 0; i < 10; i++) {
             persons.add(new Person("person" + i, "info" + i, R.mipmap.ic_launcher));
@@ -42,6 +43,7 @@ public class ListFragment extends Fragment {
         return view;
     }
 
+    // 计算listView的高度
     public void setListViewHeight() {
         PersonAdapter personAdapter = (PersonAdapter) listView.getAdapter();
 

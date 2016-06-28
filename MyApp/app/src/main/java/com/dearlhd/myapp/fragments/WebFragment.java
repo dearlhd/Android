@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Jay on 2015/8/28 0028.
+ * Created by dearlhd on 2016/6/26 0028.
  */
 public class WebFragment extends Fragment {
 
@@ -31,6 +31,7 @@ public class WebFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.page2, container, false);
 
+        // 为web view 加载页面
         webView = (WebView) view.findViewById(R.id.web_view);
 
         String url = "http://www.baidu.com";

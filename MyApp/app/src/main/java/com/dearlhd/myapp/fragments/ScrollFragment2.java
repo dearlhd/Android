@@ -10,7 +10,7 @@ import android.widget.ListView;
 import com.dearlhd.myapp.R;
 
 /**
- * Created by Jay on 2015/8/28 0028.
+ * Created by dearlhd on 2016/6/26 0028.
  */
 public class ScrollFragment2 extends Fragment {
 
@@ -22,6 +22,7 @@ public class ScrollFragment2 extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // 直接显示page4中的布局和内容
         View view = inflater.inflate(R.layout.page4, container, false);
 
         return view;

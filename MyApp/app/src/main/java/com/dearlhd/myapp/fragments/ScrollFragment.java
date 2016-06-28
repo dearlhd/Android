@@ -8,14 +8,10 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.dearlhd.myapp.R;
-import com.dearlhd.myapp.adapter.PersonAdapter;
-import com.dearlhd.myapp.entity.Person;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /**
- * Created by Jay on 2015/8/28 0028.
+ * Created by dearlhd on 2016/6/26 0028.
  */
 public class ScrollFragment extends Fragment {
 
@@ -27,6 +23,7 @@ public class ScrollFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // 直接绑定显示page3中的布局和内容
         View view = inflater.inflate(R.layout.page3, container, false);
 
         return view;

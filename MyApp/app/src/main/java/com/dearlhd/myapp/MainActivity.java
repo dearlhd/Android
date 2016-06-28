@@ -19,18 +19,19 @@ import com.dearlhd.myapp.scrollView.HoveringScrollview;
 public class MainActivity extends AppCompatActivity
         implements RadioGroup.OnCheckedChangeListener, HoveringScrollview.OnScrollListener {
 
+    // 最外层的scrollview,使标签栏和下方的fragment可以一起移动
     private HoveringScrollview hoveringScrollview;
     private LinearLayout hoveringLayout1, hoveringLayout2;
     private int radioGroupTop;
 
-    // ViewFlipper for ad
+    // ViewFlipper，实现广告循播
     private ViewFlipper adFlipper;
 
-    // radio group for tab bar
+    // radio group，用以实现标签栏
     private RadioGroup rg_tab_bar;
     private RadioButton rb_channel;
 
-    //Fragment Object
+    // 四个fragment
     private ListFragment fg1;
     private WebFragment fg2;
     private ScrollFragment fg3;
@@ -43,26 +44,27 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
-        bindViews();
+        initViews();
     }
 
 
     //UI组件初始化与事件绑定
-    private void bindViews() {
+    private void initViews() {
         // deal with hovering
         hoveringScrollview = (HoveringScrollview) findViewById(R.id.hovering_scroll_view);
         hoveringLayout1 = (LinearLayout) findViewById(R.id.hoveringLayout1);
         hoveringLayout2 = (LinearLayout) findViewById(R.id.hoveringLayout2);
         hoveringScrollview.setOnScrollListener(this);
 
-        // deal with ad flipping
+        // 开始广告的循环播放
         adFlipper = (ViewFlipper) findViewById(R.id.adFlipper);
         adFlipper.startFlipping();
 
+        // fragment manager, 用以控制fragment之间的切换
         fManager = getFragmentManager();
         rg_tab_bar = (RadioGroup) findViewById(R.id.rg_tab_bar);
         rg_tab_bar.setOnCheckedChangeListener(this);
-        //获取第一个单选按钮，并设置其为选中状态
+        // 获取第一个单选按钮，并设置其为选中状态
         rb_channel = (RadioButton) findViewById(R.id.rb_channel);
         rb_channel.setChecked(true);
     }
@@ -77,6 +79,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    // 当标签栏被点击时，切换fragment
     public void onCheckedChanged(RadioGroup radioGroup, int i) {
         FragmentTransaction fTransaction = fManager.beginTransaction();
         hideAllFragment(fTransaction);
@@ -126,13 +129,15 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    // 当屏幕滑动时，判断是否要悬浮标签栏的位置，悬浮是通过将标签栏add至另一个layout上实现的
     public void onScroll(int scrollY) {
         if (scrollY >= radioGroupTop) {
             if (rg_tab_bar.getParent() != hoveringLayout2) {
                 hoveringLayout1.removeView(rg_tab_bar);
                 hoveringLayout2.addView(rg_tab_bar);
             }
-        } else {
+        }
+        else {
             if (rg_tab_bar.getParent() != hoveringLayout1) {
                 hoveringLayout2.removeView(rg_tab_bar);
                 hoveringLayout1.addView(rg_tab_bar);

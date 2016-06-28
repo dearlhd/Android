@@ -15,6 +15,8 @@ import java.util.List;
 
 /**
  * Created by dearlhd on 2016/6/26.
+ *
+ *  自定义的adapter，用以显示list view中的内容，主要包括图片，和两段文字
  */
 public class PersonAdapter extends BaseAdapter {
     private List<Person> persons;
