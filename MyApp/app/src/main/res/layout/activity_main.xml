@@ -6,7 +6,7 @@
                 android:orientation="vertical"
                 tools:context="com.dearlhd.myapp.MainActivity">
 
-    <com.dearlhd.myapp.scrollView.HoveringScrollview
+    <com.dearlhd.myapp.views.HoveringScrollview
         android:id="@+id/hovering_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -93,14 +93,6 @@
 
         </LinearLayout>
 
-    </com.dearlhd.myapp.scrollView.HoveringScrollview>
-
-    <LinearLayout
-        android:id="@+id/hoveringLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:orientation="vertical">
-
-    </LinearLayout>
+    </com.dearlhd.myapp.views.HoveringScrollview>
 
 </RelativeLayout>

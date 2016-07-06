@@ -2,7 +2,10 @@ package com.dearlhd.myapp;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -14,15 +17,13 @@ import com.dearlhd.myapp.fragments.ListFragment;
 import com.dearlhd.myapp.fragments.ScrollFragment;
 import com.dearlhd.myapp.fragments.ScrollFragment2;
 import com.dearlhd.myapp.fragments.WebFragment;
-import com.dearlhd.myapp.scrollView.HoveringScrollview;
+import com.dearlhd.myapp.views.HoveringScrollview;
 
 public class MainActivity extends AppCompatActivity
-        implements RadioGroup.OnCheckedChangeListener, HoveringScrollview.OnScrollListener {
+        implements RadioGroup.OnCheckedChangeListener {
 
     // 最外层的scrollview,使标签栏和下方的fragment可以一起移动
-    private HoveringScrollview hoveringScrollview;
-    private LinearLayout hoveringLayout1, hoveringLayout2;
-    private int radioGroupTop;
+    private HoveringScrollview mScrollView;
 
     // ViewFlipper，实现广告循播
     private ViewFlipper adFlipper;
@@ -51,10 +52,7 @@ public class MainActivity extends AppCompatActivity
     //UI组件初始化与事件绑定
     private void initViews() {
         // deal with hovering
-        hoveringScrollview = (HoveringScrollview) findViewById(R.id.hovering_scroll_view);
-        hoveringLayout1 = (LinearLayout) findViewById(R.id.hoveringLayout1);
-        hoveringLayout2 = (LinearLayout) findViewById(R.id.hoveringLayout2);
-        hoveringScrollview.setOnScrollListener(this);
+        mScrollView = (HoveringScrollview) findViewById(R.id.hovering_scroll_view);
 
         // 开始广告的循环播放
         adFlipper = (ViewFlipper) findViewById(R.id.adFlipper);
@@ -62,6 +60,22 @@ public class MainActivity extends AppCompatActivity
 
         // fragment manager, 用以控制fragment之间的切换
         fManager = getFragmentManager();
+        FragmentTransaction fTransaction = fManager.beginTransaction();
+        fg1 = new ListFragment();
+        fTransaction.add(R.id.ly_content, fg1);
+
+        fg2 = new WebFragment();
+        fTransaction.add(R.id.ly_content, fg2);
+
+        fg3 = new ScrollFragment();
+        fTransaction.add(R.id.ly_content, fg3);
+
+        fg4 = new ScrollFragment2();
+        fTransaction.add(R.id.ly_content, fg4);
+
+        fTransaction.commit();
+        hideAllFragment(fTransaction);
+
         rg_tab_bar = (RadioGroup) findViewById(R.id.rg_tab_bar);
         rg_tab_bar.setOnCheckedChangeListener(this);
         // 获取第一个单选按钮，并设置其为选中状态
@@ -85,36 +99,16 @@ public class MainActivity extends AppCompatActivity
         hideAllFragment(fTransaction);
         switch (i) {
             case R.id.rb_channel:
-                if (fg1 == null) {
-                    fg1 = new ListFragment();
-                    fTransaction.add(R.id.ly_content, fg1);
-                } else {
-                    fTransaction.show(fg1);
-                }
+                fTransaction.show(fg1);
                 break;
             case R.id.rb_message:
-                if (fg2 == null) {
-                    fg2 = new WebFragment();
-                    fTransaction.add(R.id.ly_content, fg2);
-                } else {
-                    fTransaction.show(fg2);
-                }
+                fTransaction.show(fg2);
                 break;
             case R.id.rb_better:
-                if (fg3 == null) {
-                    fg3 = new ScrollFragment();
-                    fTransaction.add(R.id.ly_content, fg3);
-                } else {
-                    fTransaction.show(fg3);
-                }
+                fTransaction.show(fg3);
                 break;
             case R.id.rb_setting:
-                if (fg4 == null) {
-                    fg4 = new ScrollFragment2();
-                    fTransaction.add(R.id.ly_content, fg4);
-                } else {
-                    fTransaction.show(fg4);
-                }
+                fTransaction.show(fg4);
                 break;
         }
         fTransaction.commit();
@@ -124,24 +118,13 @@ public class MainActivity extends AppCompatActivity
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         if (hasFocus) {
-            radioGroupTop = adFlipper.getBottom();// 获取searchLayout的顶部位置
+            int height = mScrollView.getHeight() - rg_tab_bar.getHeight();
+
+            ViewGroup vg = (ViewGroup) findViewById(R.id.ly_content);
+            ViewGroup.LayoutParams params = vg.getLayoutParams();
+            params.height = height;
+            vg.setLayoutParams(params);
         }
     }
 
-    @Override
-    // 当屏幕滑动时，判断是否要悬浮标签栏的位置，悬浮是通过将标签栏add至另一个layout上实现的
-    public void onScroll(int scrollY) {
-        if (scrollY >= radioGroupTop) {
-            if (rg_tab_bar.getParent() != hoveringLayout2) {
-                hoveringLayout1.removeView(rg_tab_bar);
-                hoveringLayout2.addView(rg_tab_bar);
-            }
-        }
-        else {
-            if (rg_tab_bar.getParent() != hoveringLayout1) {
-                hoveringLayout2.removeView(rg_tab_bar);
-                hoveringLayout1.addView(rg_tab_bar);
-            }
-        }
-    }
 }

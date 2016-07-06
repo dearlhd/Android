@@ -2,10 +2,12 @@ package com.dearlhd.myapp.fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.ScrollView;
 
 import com.dearlhd.myapp.R;
 
@@ -15,8 +17,6 @@ import com.dearlhd.myapp.R;
  */
 public class ScrollFragment extends Fragment {
 
-    private ListView listView;
-
     public ScrollFragment() {
 
     }
@@ -25,8 +25,6 @@ public class ScrollFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // 直接绑定显示page3中的布局和内容
         View view = inflater.inflate(R.layout.page3, container, false);
-
         return view;
     }
-
 }
