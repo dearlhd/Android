@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="50dp">
+    <TextView
+        android:id="@+id/txt_sound_name"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:textAlignment="center"
+        android:text="filename"/>
+    
+    <Button
+        android:id="@+id/btn_play_sound"
+        android:layout_width="120dp"
+        android:layout_height="match_parent"
+        android:text="播放"/>
+    
+</LinearLayout>
