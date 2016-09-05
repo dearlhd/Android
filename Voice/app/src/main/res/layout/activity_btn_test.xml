@@ -11,14 +11,12 @@
         android:layout_width="80dip"
         android:layout_height="80dip"
         android:layout_centerInParent="true"
+        android:visibility="invisible"
 
         android_custom:tipImg="@mipmap/record"
-        android_custom:textIsDisplayable="true"
         android_custom:roundColor="#D1D1D1"
         android_custom:roundProgressColor="@android:color/black"
-        android_custom:textColor="#9A32CD"
-        android_custom:roundWidth="10dip"
-        android_custom:textSize="18sp" />
+        android_custom:roundWidth="10dip" />
 
     <Button
         android:id="@+id/reset_btn"
@@ -31,5 +29,17 @@
         android:text="重新录制"
         android:textAlignment="center"/>
 
+
+    <com.lhd.voice.view.RecordView
+        android:id="@+id/record_view"
+        android:layout_width="80dip"
+        android:layout_height="80dip"
+        android:layout_above="@id/roundProgressBar"
+
+        android_custom:tipImg="@mipmap/record"
+        android_custom:ringColor="#D1D1D1"
+        android_custom:ringProgressColor="@android:color/black"
+        android_custom:ringWidth="8dip"
+        android_custom:tipImgWidth2="65dp"/>
 
 </RelativeLayout>

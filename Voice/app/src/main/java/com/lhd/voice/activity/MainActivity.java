@@ -1,56 +1,68 @@
 package com.lhd.voice.activity;
 
+import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.PermissionChecker;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ListView;
+import android.webkit.JavascriptInterface;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
+import com.lhd.library.MP3Recorder;
 import com.lhd.voice.R;
-import com.lhd.voice.adapter.SoundAdapter;
-import com.lhd.voice.view.RoundProgressBar;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.jar.Manifest;
 
-public class MainActivity extends AppCompatActivity {
+// http://172.16.86.39/fenda/build/#/record?_k=0t45hl
+public class MainActivity extends Activity {
     private MediaRecorder mMediaRecorder;
     private MediaPlayer mMediaPlayer;
-    private Button resetBtn;
+
+    private WebView mWebView;
 
     private String mDir;
     private String mSoundName;
 
-
-    private RoundProgressBar mRoundBar;
-    private int seconds = 0;
-    private Timer mTimer;
-    private boolean mTimerStatus = false;
+    private MP3Recorder mMp3Recorder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_btn_test);
-//        setContentView(R.layout.activity_main);
-//        initViews();
-        initRoundBar();
+        setContentView(R.layout.activity_web);
+        initRecordComponent();
+        initWebView();
     }
 
-    private void initRoundBar() {
+    @Override
+    protected void onPause () {
+        super.onPause();
+        if (mMp3Recorder != null) {
+            stopRecordingMp3();
+        }
+        if (mMediaPlayer != null) {
+            stopPlaying();
+        }
+    }
+
+    @Override
+    protected void onDestroy () {
+        super.onDestroy();
+        if (mMp3Recorder != null) {
+            stopRecordingMp3();
+        }
+        if (mMediaPlayer != null) {
+            stopPlaying();
+        }
+    }
+
+    private void initRecordComponent () {
         // 录音权限检查
         int audioPerm = ContextCompat.checkSelfPermission(this, android.Manifest.permission.RECORD_AUDIO);
         int storagePerm = ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -62,112 +74,26 @@ public class MainActivity extends AppCompatActivity {
                 requestPermissions(perms, permsRequestCode);
             }
         }
-
-        mTimer = new Timer();
-        final TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                Message msg = new Message();
-                msg.what = 0;
-                handler.sendMessage(msg);
-            }
-        };
-        mTimer.schedule(timerTask, 0, 1000);
-
-        mRoundBar = (RoundProgressBar) findViewById(R.id.roundProgressBar);
-        mRoundBar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                RoundProgressBar.RecordStatus status = mRoundBar.getRecordStatus();
-
-                Log.i("dong", "onclick: bar status is " + status);
-
-                switch (status) {
-                    case PREPARED:
-                        startRecord();
-                        mTimerStatus = true;
-                        seconds = 0;
-                        break;
-                    case RECORDING:
-                        stopRecord();
-                        mTimerStatus = false;
-                        break;
-                    case TERMINATED:
-                        playSound();
-                        mTimerStatus = false;
-                        break;
-                    case PLAYING:
-                        stopPlaying();
-                        mTimerStatus = false;
-                        break;
-                }
-
-                mRoundBar.changeTipImg();
-            }
-        });
-
-
-        resetBtn = (Button) findViewById(R.id.reset_btn);
-        resetBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick (View view) {
-                if (mRoundBar != null) {
-                    mRoundBar.reset();
-                }
-            }
-        });
     }
 
-    final Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case 0:
-                    if (mTimerStatus) {
-                        if (seconds <= 60) {
-                            mRoundBar.setProgress(seconds++);
-                        } else {
-                            stopRecord();
-                            mRoundBar.setRecordStatus(RoundProgressBar.RecordStatus.TERMINATED);
-                        }
-                    }
-            }
-        }
-    };
+    private void initWebView () {
+        mWebView = (WebView) findViewById(R.id.record_web_view);
+        WebSettings webSettings = mWebView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
 
+        mWebView.setWebViewClient(new WebViewClient());
+        mWebView.addJavascriptInterface(new MyJsInterface(), "record");
 
-    //    private void initViews() {
-//        mRecordBtn = (Button) findViewById(R.id.record_btn);
-//        mRecordBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (!mIsStart) {
-//                    startRecord();
-//                    mRecordBtn.setText("停止录制");
-//                    mIsStart = true;
-//                }
-//                else {
-//                    stopRecord();
-//                    mRecordBtn.setText("开始录制");
-//                    mIsStart = false;
-//                }
-//            }
-//        });
-//
-//        mSoundList = (ListView) findViewById(R.id.sound_list);
-//        String dirPath = Environment.getExternalStorageDirectory() + "/sounds";
-//        File dir = new File (dirPath);
-//        if (!dir.exists()) {
-//            dir.mkdirs();
-//        }
-//
-//        mSAdapter = new SoundAdapter(this, dir.list(), dirPath);
-//
-//        mSoundList.setAdapter(mSAdapter);
-//    }
-//
-    private void startRecord () {
-        // 录音权限检查
+        Log.i("dong", "loading url...");
+        String url = "http://172.16.86.39/fenda/build/#/record?_k=0t45hl";
+//        url = "file:///android_asset/record.html";
+        mWebView.loadUrl(url);
+    }
+
+    private void startRecordingMp3 () {
+        Log.i("dong", "startRecordingMp3");
+
+        // 权限检查
         int audioPerm = ContextCompat.checkSelfPermission(this, android.Manifest.permission.RECORD_AUDIO);
         int storagePerm = ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
@@ -179,54 +105,35 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        audioPerm = ContextCompat.checkSelfPermission(this, android.Manifest.permission.RECORD_AUDIO);
-        storagePerm = ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-        if (!(audioPerm == PackageManager.PERMISSION_GRANTED && storagePerm == PackageManager.PERMISSION_GRANTED)) {
-            mRoundBar.setEnabled(false);
+        // 创建文件
+        File dir = new File(Environment.getExternalStorageDirectory(), "sounds");
+        mDir = dir.getAbsolutePath();
+        if (!dir.exists()) {
+            dir.mkdirs();
         }
 
-        if (mMediaRecorder == null) {
-            File dir = new File(Environment.getExternalStorageDirectory(), "sounds");
-            mDir = dir.getAbsolutePath();
-            if (!dir.exists()) {
-                dir.mkdirs();
-            }
-
-            mSoundName = System.currentTimeMillis() + ".amr";
-            File soundFile = new File(dir, mSoundName);
-            if (!soundFile.exists()) {
-                try {
-                    soundFile.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            mMediaRecorder = new MediaRecorder();
-            mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-            mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_WB);
-            mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_WB);
-            Log.i("dong", soundFile.getAbsolutePath());
-
-            mMediaRecorder.setOutputFile(soundFile.getAbsolutePath());
+        mSoundName = System.currentTimeMillis() + ".mp3";
+        Log.i("dong", mSoundName);
+        File soundFile = new File(dir, mSoundName);
+        if (!soundFile.exists()) {
             try {
-                mMediaRecorder.prepare();
-                mMediaRecorder.start();
-            }
-            catch (IOException e) {
+                soundFile.createNewFile();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+
+        mMp3Recorder = new MP3Recorder(soundFile);
+        try {
+            mMp3Recorder.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void stopRecord () {
-        if (mMediaRecorder != null) {
-            mMediaRecorder.stop();
-            mMediaRecorder.release();
-            mMediaRecorder = null;
-//            mSAdapter.add(mSoundName);
-        }
+    private void stopRecordingMp3 () {
+        Log.i("dong", "stopRecordingMp3");
+        mMp3Recorder.stop();
     }
 
     private void playSound () {
@@ -236,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
         mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                mRoundBar.callOnClick();
+//                mRoundBar.callOnClick();
             }
         });
 
@@ -254,5 +161,46 @@ public class MainActivity extends AppCompatActivity {
     private void stopPlaying () {
         mMediaPlayer.reset();
         mMediaPlayer.release();
+    }
+
+    private void deleteMp3File () {
+        if (mDir != null && mSoundName != null) {
+            File soundFile = new File(mDir, mSoundName);
+            if (soundFile.exists()) {
+                soundFile.delete();
+            }
+        }
+    }
+
+    final class MyJsInterface {
+        @JavascriptInterface
+        public void startRecord() {
+            Log.i("dong", "start recording...");
+            startRecordingMp3();
+        }
+
+        @JavascriptInterface
+        public void stopRecord() {
+            Log.i("dong", "record stopped");
+            stopRecordingMp3();
+        }
+
+        @JavascriptInterface
+        public void play() {
+            Log.i("dong", "start playing...");
+            playSound();
+        }
+
+        @JavascriptInterface
+        public void stopPlay(){
+            Log.i("dong", "play stopped.");
+            stopPlaying();
+        }
+
+        @JavascriptInterface
+        public void reRecord() {
+            deleteMp3File();
+            startRecordingMp3();
+        }
     }
 }

@@ -69,9 +69,6 @@ public class RoundProgressBar extends View {
      */
     private int style;
 
-    // lhd 文本内容
-    private String text;
-
     private int tipImg;
 
     private float tipImgWidth = 180;
@@ -110,7 +107,6 @@ public class RoundProgressBar extends View {
         style = mTypedArray.getInt(R.styleable.RoundProgressBar_style, 0);
 
         // lhd
-        text = mTypedArray.getString(R.styleable.RoundProgressBar_text);
         tipImg = mTypedArray.getResourceId(R.styleable.RoundProgressBar_tipImg, R.mipmap.record);
         tipImgWidth = mTypedArray.getDimension(R.styleable.RoundProgressBar_tipImgWidth, 180);
 
@@ -132,8 +128,6 @@ public class RoundProgressBar extends View {
         paint.setStrokeWidth(roundWidth); //设置圆环的宽度
         paint.setAntiAlias(true);  //消除锯齿
         canvas.drawCircle(centre, centre, radius, paint); //画出圆环
-
-        Log.e("log", centre + "");
 
         /**
          * 画中间的图标

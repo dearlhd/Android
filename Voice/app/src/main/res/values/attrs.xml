@@ -16,4 +16,14 @@
         <attr name="tipImg" format="reference" />
         <attr name="tipImgWidth" format="dimension" />
     </declare-styleable>
+
+    <declare-styleable name="RecordView">
+        <attr name="ringColor" format="color" />
+        <attr name="ringProgressColor" format="color" />
+        <attr name="radius" format="dimension" />
+        <attr name="ringWidth" format="dimension" />
+        <attr name="maxProgress" format="integer" />
+        <attr name="tipImg2" format="reference" />
+        <attr name="tipImgWidth2" format="dimension" />
+    </declare-styleable>
 </resources>
